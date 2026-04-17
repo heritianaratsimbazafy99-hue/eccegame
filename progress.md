@@ -1,0 +1,68 @@
+Original prompt: Tu vas me coder une application simple, rapide et exploitable immédiatement pour demain, afin d’animer un jeu de prise de décision en équipe pendant une formation / workshop. Priorité absolue: utilisation réelle demain, groupe réel via le fichier Excel, expérience fluide sur smartphone via lien ou QR code. Commencer directement par exploiter le fichier Excel et générer une première version fonctionnelle.
+
+- 2026-04-16: Workspace initialement vide.
+- 2026-04-16: Fichier source copié dans `public/data/smilebox.xlsx` pour préchargement immédiat dans l'app.
+- 2026-04-16: Le workbook contient 105 participants sur une feuille `All Directions (4)`.
+- 2026-04-16: Equipes détectées côté source: Vente grand Public, Technique et réseau, Vente Entreprise, Système informatique, Orange Money, Finance et compta, Relation Client, Relation extérieure - RSE - Engagement salarié, Marketing et communication commerciale, RH, Stratégie et transformation, DG, sécratariat général.
+
+- 2026-04-16: App Vite/React/TypeScript créée avec préchargement du fichier Smilebox et génération déterministe des cartes pour garder des liens stables.
+- 2026-04-16: Vues livrées: admin, carte mobile, pack animateur, planche QR, fiche de restitution.
+- 2026-04-16: Vérification `npm run build` OK.
+- 2026-04-16: `npm run start` démarre bien et expose une URL réseau Vite pour les smartphones.
+- 2026-04-16: Correctif import Smilebox: détection de la colonne `Dir` assouplie et préchargement via `public/data/smilebox.participants.json`.
+- 2026-04-16: Backend local ultra léger ajouté via `server.cjs` + `.runtime/shared-state.json` pour partager la session et les votes entre appareils sans base externe en local.
+- 2026-04-16: App synchronisée avec `/api/state` pour pousser le snapshot courant, recevoir les votes live et réinitialiser les réponses côté admin.
+- 2026-04-16: UI enrichie avec vote individuel A/B sur mobile, onglet admin `Réponses live` et onglet `Constitution des équipes`.
+- 2026-04-16: Vérification `npm run build` OK après ajout du serveur partagé et des nouveaux écrans de vote.
+- 2026-04-16: Vérification `npm run start` OK, le serveur annonce `EcceGame server ready on http://0.0.0.0:3000`.
+- 2026-04-16: README mis à jour pour documenter le stockage local partagé `.runtime/shared-state.json` et le flux de vote live.
+- 2026-04-16: Tentative de test Playwright impossible dans cet environnement car le package `playwright` n'est pas installé.
+- 2026-04-16: Carte mobile durcie: bouton de retour admin retiré, en-tête ajustée pour éviter le chevauchement avec le badge `DOSSIER`.
+- 2026-04-16: Vote joueur maintenant en verrouillage différé 5 secondes avec annulation locale avant soumission finale.
+- 2026-04-16: Backend durci: un vote déjà enregistré ne peut plus être modifié pour la même carte.
+- 2026-04-16: Vérification `npm run build` OK après le verrouillage définitif et les ajustements mobile.
+- 2026-04-16: Compte à rebours de verrouillage porté à 10 secondes avec sablier animé et jauge visuelle sur la carte joueur.
+- 2026-04-16: Nouveau mur live ajouté pour diffusion continue: progression individuelle par équipe, classement dynamique et indicateurs de votes A/B.
+- 2026-04-16: Vérification `npm run build` OK après ajout du board live projetable.
+- 2026-04-16: Génération des équipes refaite en mode inter-métiers équilibré, avec répartition aussi homogène que possible des rôles source entre `Equipe 1..N`.
+- 2026-04-16: Vérification locale sur le roster Smilebox: 13 équipes générées, tailles 8 à 9 participants, dispersion visible des rôles clés (DG, Technique et réseau, Finance, etc.).
+- 2026-04-16: Correction de cap: abandon du thème COMEX sérieux au profit d'un retour plein pot vers Mission Impossible, plus fun, plus piégeux et plus théâtral.
+- 2026-04-16: Les textes d'interface, les accroches narratives, les intitulés d'options et la palette visuelle ont été rebranchés sur une ambiance opération secrète / tension / surprise.
+- 2026-04-16: Vérification `npm run build` OK après retour au thème Mission Impossible et réécriture fun des scénarios/choix.
+- 2026-04-16: Deuxième passe narrative: les situations, options et dilemmes ont été réécrits pour devenir franchement plus joueurs, plus visuels et plus amusants sans perdre l'ambiguïté.
+- 2026-04-16: Troisième passe narrative: les cartes individuelles elles-mêmes ont été rendues plus théâtrales via nouveaux headlines, prompts de débat, hooks de corps de carte et micro-textes joueur plus fun.
+- 2026-04-17: Quatrième passe narrative: ajout d'une couche de fictionalisation automatique par archetype pour transformer le vocabulaire encore trop "travail" des cartes en univers de citadelle, casino, labo, gala, parc, camp de base ou train fantome.
+- 2026-04-17: Habillage joueur encore plus ludique sur mobile avec intitulés rebasculés vers un ton mission / chaos / survie.
+- 2026-04-17: Vérification `npm run build` OK après la dé-corporatisation des cartes et la nouvelle couche fictionnelle.
+- 2026-04-17: Cinquième passe narrative: les decks de cartes ne réutilisent plus les anciens contenus "métier" et sont maintenant générés comme de vrais dossiers d'espionnage ambigus, avec leurres, passages secrets, rondes, alliés douteux et faux confort.
+- 2026-04-17: Les scénarios les plus faibles ont été rebasculés vers des missions franchement fictives (casino flottant, parc sous couverture, etc.) et la composition d'équipe a été retirée des cartes individuelles.
+- 2026-04-17: Versionnage du contenu du jeu ajouté pour éviter d'afficher un vieux snapshot local/partagé après un changement majeur du moteur narratif.
+- 2026-04-17: Vérification `npm run build` OK après remplacement complet des decks et ajout de la version de contenu.
+- 2026-04-17: Tentative de boucle Playwright via le client du skill impossible dans cet environnement car le package `playwright` n'est pas installé.
+- 2026-04-17: Répartition des participants refaite sur 10 équipes fixes via tailles cibles calculées (sur le roster Smilebox: 5 équipes de 11 et 5 équipes de 10) avec équilibrage homogène des rôles par capacité d'équipe.
+- 2026-04-17: Les univers de mission sont désormais attribués par équipe et non plus dérivés du rôle dominant, ce qui garantit 10 scénarios distincts et 10 familles de cartes différentes sur le roster final.
+- 2026-04-17: Version de contenu portée à v3 et clé de session locale portée à v3 pour forcer la régénération propre des anciens snapshots narratifs.
+- 2026-04-17: Vérification `npm run build` OK après passage aux 10 équipes fixes et aux univers uniques par équipe.
+- 2026-04-17: Nouvelle mécanique d'intrus ajoutée: 2 taupes par équipe, choisies automatiquement dans les cartes générées, avec mauvaise option cible et brief clandestin visible uniquement sur leurs cartes.
+- 2026-04-17: Ajout d'un système de désignation des intrus côté joueur via deux menus déroulants; les soupçons sont synchronisés via l'API locale et visibles côté admin / animateur.
+- 2026-04-17: Dossier animateur enrichi avec la liste des intrus réels, l'option de sabotage visée et le journal des soupçons remontés par les agents.
+- 2026-04-17: Admin enrichi avec la cellule d'intrusion et les soupçons par équipe; mur live mis à jour avec le suivi des désignations d'intrus sans spoiler les noms.
+- 2026-04-17: Passe narrative supplémentaire: codenames de mission distincts par univers, hooks d'ambiance spécifiques par archétype, briefs intrus plus ludiques, et overlays réécrits pour casser les scénarios trop semblables.
+- 2026-04-17: Version de contenu portée à v4 et clé de session locale portée à v4 pour forcer la régénération propre des anciens snapshots après la refonte intrus + narration.
+- 2026-04-17: Vérification `npm run build` OK après ajout des intrus et refonte narrative.
+- 2026-04-17: Vérification `npm run start` OK, le serveur annonce `EcceGame server ready on http://0.0.0.0:3000`.
+- 2026-04-17: Nouvelle tentative de boucle Playwright via le client du skill toujours bloquée ici car le package `playwright` n'est pas installé (`ERR_MODULE_NOT_FOUND`).
+- 2026-04-17: Migration de l'état partagé préparée pour Supabase + Vercel sans casser le front: mêmes endpoints `/api/...`, couche de stockage abstraite fichier local ou Supabase selon l'environnement.
+- 2026-04-17: Fonctions Vercel ajoutées dans `api/` pour `state`, `snapshot`, `votes`, `votes/reset` et `intruders/guess`.
+- 2026-04-17: `server.cjs` refactoré pour réutiliser la même logique métier que les fonctions Vercel.
+- 2026-04-17: Fichiers de déploiement ajoutés: `supabase/schema.sql`, `.env.example`, `vercel.json`, README enrichi avec le guide de bascule Supabase + Vercel.
+- 2026-04-17: Vérification `api-import-ok` réalisée sur tous les modules `api/`.
+- 2026-04-17: Vérification `npm run build` OK après la préparation Supabase + Vercel.
+- 2026-04-17: Vérification `PORT=3010 npm run start` OK; un warning WebSocket Vite apparaît dans le sandbox mais le serveur Express démarre bien ensuite.
+- 2026-04-17: Correction du reset partagé: la remise à zéro efface désormais à la fois les votes et les désignations d'intrus.
+- 2026-04-17: Ajout d'un `.gitignore` et d'un guide README dédié au flux GitHub -> Vercel -> Supabase.
+
+TODO
+- Tester la soumission de vote depuis deux appareils réels sur le même réseau local pour valider la boucle complète front -> API -> admin.
+- Tester la boucle complete "designation de 2 intrus" depuis deux telephones differents et verifier la remontée dans le dossier animateur.
+- Tester localement la bascule réelle sur Supabase avec de vraies variables d'environnement avant le déploiement Vercel final.
