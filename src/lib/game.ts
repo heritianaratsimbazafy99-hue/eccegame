@@ -3210,8 +3210,14 @@ function resolveRoleLabel(participant: Participant): string {
   return participant.service || participant.direction || participant.teamName || "Direction non precisee";
 }
 
+const MAX_PARTICIPANTS_PER_TEAM = 11;
+
 function buildTargetTeamSizes(participantCount: number): number[] {
-  const teamCount = Math.min(10, Math.max(1, participantCount));
+  if (participantCount <= 0) {
+    return [];
+  }
+
+  const teamCount = Math.max(1, Math.ceil(participantCount / MAX_PARTICIPANTS_PER_TEAM));
   const baseSize = Math.floor(participantCount / teamCount);
   const extraSeats = participantCount % teamCount;
 

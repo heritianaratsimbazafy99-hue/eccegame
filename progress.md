@@ -65,6 +65,7 @@ Original prompt: Tu vas me coder une application simple, rapide et exploitable i
 - 2026-04-20: Le front s'abonne à Supabase Realtime quand `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` sont présents; le polling `/api/state` reste uniquement en fallback.
 - 2026-04-20: Documentation mise à jour pour les variables Vercel/Supabase supplémentaires nécessaires au client Realtime.
 - 2026-04-20: Ajout d'un favicon SVG inspiré du visuel fourni et branchement dans `index.html` pour supprimer le 404 `/favicon.ico`.
+- 2026-04-21: Suppression de la logique des 10 équipes fixes; les équipes sont maintenant calculées automatiquement pour rester équilibrées avec un plafond de 11 participants par équipe.
 
 TODO
 - Tester la soumission de vote depuis deux appareils réels sur le même réseau local pour valider la boucle complète front -> API -> admin.
