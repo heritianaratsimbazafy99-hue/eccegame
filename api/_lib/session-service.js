@@ -1,4 +1,5 @@
 import { findCardEntry, readState, writeState } from "./session-store.js";
+import { broadcastSessionEvent, SESSION_EVENTS } from "./realtime.js";
 
 export class HttpError extends Error {
   constructor(status, message) {
@@ -16,11 +17,20 @@ export async function replaceSnapshot(snapshot) {
     throw new HttpError(400, "Snapshot invalide.");
   }
 
-  return writeState({
+  const nextState = await writeState({
     snapshot,
     votes: {},
     guesses: {}
   });
+
+  await broadcastSessionEvent(SESSION_EVENTS.snapshotReplaced, {
+    snapshot: nextState.snapshot,
+    votes: nextState.votes,
+    guesses: nextState.guesses,
+    updatedAt: nextState.updatedAt
+  });
+
+  return nextState;
 }
 
 export async function createVote(cardId, choice) {
@@ -53,10 +63,13 @@ export async function createVote(cardId, choice) {
   };
 
   const nextState = await writeState(state);
-  return {
+  const payload = {
     vote: nextState.votes[cardId],
     updatedAt: nextState.updatedAt
   };
+
+  await broadcastSessionEvent(SESSION_EVENTS.voteSubmitted, payload);
+  return payload;
 }
 
 export async function createIntruderGuess(cardId, suspectIds) {
@@ -107,17 +120,26 @@ export async function createIntruderGuess(cardId, suspectIds) {
   };
 
   const nextState = await writeState(state);
-  return {
+  const payload = {
     guess: nextState.guesses[cardId],
     updatedAt: nextState.updatedAt
   };
+
+  await broadcastSessionEvent(SESSION_EVENTS.intruderGuessSubmitted, payload);
+  return payload;
 }
 
 export async function clearVotes() {
   const state = await readState();
-  return writeState({
+  const nextState = await writeState({
     snapshot: state.snapshot,
     votes: {},
     guesses: {}
   });
+
+  await broadcastSessionEvent(SESSION_EVENTS.votesReset, {
+    updatedAt: nextState.updatedAt
+  });
+
+  return nextState;
 }

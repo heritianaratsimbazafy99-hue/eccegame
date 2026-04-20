@@ -93,6 +93,7 @@ Dans Supabase, récupère :
 
 - `Project URL`
 - `service_role key`
+- `anon key` ou `publishable key`
 
 ### 3. Tester localement avec Supabase
 
@@ -107,6 +108,8 @@ Puis renseigne `.env` avec :
 ```bash
 SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=xxxxxxxx
+VITE_SUPABASE_URL=https://xxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=xxxxxxxx
 PORT=3000
 ```
 
@@ -116,7 +119,16 @@ Puis lance :
 npm run start
 ```
 
-Tant que ces variables sont présentes, le serveur local écrit dans Supabase au lieu du fichier `.runtime/shared-state.json`.
+Tant que ces variables sont présentes :
+
+- le serveur local écrit dans Supabase au lieu du fichier `.runtime/shared-state.json`
+- le front s'abonne à Supabase Realtime
+- le polling `/api/state` en boucle est désactivé
+
+Concrètement :
+
+- `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` servent au serveur pour lire/écrire
+- `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` servent au navigateur pour écouter les événements Realtime
 
 ### 4. Déployer sur Vercel
 
@@ -140,6 +152,8 @@ Dans le dashboard Vercel, ajoute :
 ```bash
 SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=xxxxxxxx
+VITE_SUPABASE_URL=https://xxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=xxxxxxxx
 ```
 
 Puis relance un déploiement de production :
@@ -224,6 +238,8 @@ Ajoute dans Vercel :
 ```bash
 SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=xxxxxxxx
+VITE_SUPABASE_URL=https://xxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=xxxxxxxx
 ```
 
 En pratique tu peux le faire :
@@ -234,8 +250,12 @@ En pratique tu peux le faire :
 ```bash
 vercel env add SUPABASE_URL production
 vercel env add SUPABASE_SERVICE_ROLE_KEY production
+vercel env add VITE_SUPABASE_URL production
+vercel env add VITE_SUPABASE_ANON_KEY production
 vercel env add SUPABASE_URL preview
 vercel env add SUPABASE_SERVICE_ROLE_KEY preview
+vercel env add VITE_SUPABASE_URL preview
+vercel env add VITE_SUPABASE_ANON_KEY preview
 ```
 
 ### 6. Déployer et synchroniser
@@ -255,6 +275,22 @@ git push origin main
 ```
 
 À chaque push sur `main`, Vercel redéploie automatiquement la production.
+
+## Migration Realtime
+
+Le projet utilise désormais une stratégie hybride :
+
+- `GET /api/state` uniquement au chargement initial
+- les écritures restent validées par les endpoints `/api/...`
+- chaque écriture diffuse ensuite un événement Supabase Realtime
+- si Realtime n'est pas configuré côté navigateur, l'app retombe automatiquement sur le polling local
+
+Événements diffusés :
+
+- remplacement du snapshot
+- vote verrouillé
+- désignation d'intrus
+- remise à zéro votes + soupçons
 
 ### 7. Vérification finale
 

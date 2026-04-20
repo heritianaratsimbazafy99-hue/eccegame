@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import QRCode from "qrcode";
 import AdminDashboard from "./components/AdminDashboard";
 import FacilitatorView from "./components/FacilitatorView";
@@ -8,6 +8,7 @@ import QrSheetView from "./components/QrSheetView";
 import RestitutionView from "./components/RestitutionView";
 import { fetchSharedState, pushSnapshot, resetVotes, submitIntruderGuess, submitVote } from "./lib/api";
 import { buildCardIndex, GAME_CONTENT_VERSION, generateGame } from "./lib/game";
+import { isRealtimeConfigured, subscribeToSessionRealtime } from "./lib/realtime";
 import { parseWorkbook } from "./lib/workbook";
 import type {
   GameSnapshot,
@@ -20,7 +21,7 @@ import type {
 const SESSION_STORAGE_KEY = "ecce-game-session-v4";
 const RESTITUTION_STORAGE_KEY = "ecce-game-restitution-v1";
 const BASE_URL_STORAGE_KEY = "ecce-game-base-url-v1";
-const POLL_INTERVAL_MS = 2500;
+const FALLBACK_POLL_INTERVAL_MS = 2500;
 
 const EMPTY_RESTITUTION: RestitutionEntry = {
   decision: "",
@@ -86,6 +87,12 @@ export default function App() {
   const [submittingGuessCardId, setSubmittingGuessCardId] = useState<string>("");
 
   const cardIndex = useMemo(() => (snapshot ? buildCardIndex(snapshot) : {}), [snapshot]);
+  const snapshotRef = useRef<GameSnapshot | null>(snapshot);
+  const realtimeAvailable = isRealtimeConfigured();
+
+  useEffect(() => {
+    snapshotRef.current = snapshot;
+  }, [snapshot]);
 
   useEffect(() => {
     function handlePopState() {
@@ -148,6 +155,10 @@ export default function App() {
   }, [baseUrl, snapshot]);
 
   useEffect(() => {
+    if (realtimeAvailable) {
+      return;
+    }
+
     if (!snapshot) {
       return;
     }
@@ -163,10 +174,10 @@ export default function App() {
 
         if (
           remoteState.snapshot &&
-          (!snapshot ||
-            remoteState.snapshot.generatedAt !== snapshot.generatedAt ||
-            remoteState.snapshot.sourceName !== snapshot.sourceName ||
-            remoteState.snapshot.contentVersion !== snapshot.contentVersion)
+          (!snapshotRef.current ||
+            remoteState.snapshot.generatedAt !== snapshotRef.current.generatedAt ||
+            remoteState.snapshot.sourceName !== snapshotRef.current.sourceName ||
+            remoteState.snapshot.contentVersion !== snapshotRef.current.contentVersion)
         ) {
           writeSnapshotLocally(remoteState.snapshot);
         }
@@ -181,13 +192,45 @@ export default function App() {
     void syncSharedState();
     const intervalId = window.setInterval(() => {
       void syncSharedState();
-    }, POLL_INTERVAL_MS);
+    }, FALLBACK_POLL_INTERVAL_MS);
 
     return () => {
       disposed = true;
       window.clearInterval(intervalId);
     };
-  }, [snapshot?.generatedAt, snapshot?.sourceName]);
+  }, [realtimeAvailable, snapshot?.generatedAt, snapshot?.sourceName]);
+
+  useEffect(() => {
+    if (!realtimeAvailable) {
+      return;
+    }
+
+    return subscribeToSessionRealtime({
+      onSnapshotReplaced: ({ snapshot: nextSnapshot, votes: nextVotes, guesses: nextGuesses }) => {
+        if (nextSnapshot) {
+          writeSnapshotLocally(nextSnapshot);
+        }
+        setVotes(nextVotes ?? {});
+        setGuesses(nextGuesses ?? {});
+      },
+      onVoteSubmitted: ({ vote }) => {
+        setVotes((current) => ({
+          ...current,
+          [vote.cardId]: vote
+        }));
+      },
+      onIntruderGuessSubmitted: ({ guess }) => {
+        setGuesses((current) => ({
+          ...current,
+          [guess.cardId]: guess
+        }));
+      },
+      onVotesReset: () => {
+        setVotes({});
+        setGuesses({});
+      }
+    });
+  }, [realtimeAvailable]);
 
   function writeSnapshotLocally(nextSnapshot: GameSnapshot) {
     setSnapshot(nextSnapshot);

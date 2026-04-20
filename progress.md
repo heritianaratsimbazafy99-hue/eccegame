@@ -61,6 +61,9 @@ Original prompt: Tu vas me coder une application simple, rapide et exploitable i
 - 2026-04-17: Vérification `PORT=3010 npm run start` OK; un warning WebSocket Vite apparaît dans le sandbox mais le serveur Express démarre bien ensuite.
 - 2026-04-17: Correction du reset partagé: la remise à zéro efface désormais à la fois les votes et les désignations d'intrus.
 - 2026-04-17: Ajout d'un `.gitignore` et d'un guide README dédié au flux GitHub -> Vercel -> Supabase.
+- 2026-04-20: Migration phase 1 vers Supabase Realtime: les écritures restent côté API, mais chaque mutation broadcast désormais un événement de session via Realtime Broadcast.
+- 2026-04-20: Le front s'abonne à Supabase Realtime quand `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` sont présents; le polling `/api/state` reste uniquement en fallback.
+- 2026-04-20: Documentation mise à jour pour les variables Vercel/Supabase supplémentaires nécessaires au client Realtime.
 
 TODO
 - Tester la soumission de vote depuis deux appareils réels sur le même réseau local pour valider la boucle complète front -> API -> admin.
