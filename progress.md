@@ -64,6 +64,7 @@ Original prompt: Tu vas me coder une application simple, rapide et exploitable i
 - 2026-04-20: Migration phase 1 vers Supabase Realtime: les écritures restent côté API, mais chaque mutation broadcast désormais un événement de session via Realtime Broadcast.
 - 2026-04-20: Le front s'abonne à Supabase Realtime quand `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` sont présents; le polling `/api/state` reste uniquement en fallback.
 - 2026-04-20: Documentation mise à jour pour les variables Vercel/Supabase supplémentaires nécessaires au client Realtime.
+- 2026-04-20: Ajout d'un favicon SVG inspiré du visuel fourni et branchement dans `index.html` pour supprimer le 404 `/favicon.ico`.
 
 TODO
 - Tester la soumission de vote depuis deux appareils réels sur le même réseau local pour valider la boucle complète front -> API -> admin.

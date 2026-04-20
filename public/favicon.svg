@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ecce favicon">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="58%">
+      <stop offset="0%" stop-color="#ffeaa0" />
+      <stop offset="58%" stop-color="#ffd45c" />
+      <stop offset="100%" stop-color="#ffbf1f" />
+    </radialGradient>
+    <linearGradient id="question" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9a00" />
+      <stop offset="100%" stop-color="#d81e05" />
+    </linearGradient>
+    <linearGradient id="check" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5da700" />
+      <stop offset="100%" stop-color="#2f7b00" />
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.6" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <circle cx="32" cy="32" r="29" fill="url(#bg)" />
+  <g filter="url(#glow)" opacity="0.9">
+    <path d="M32 8l8 10H24z" fill="#fff7d3" opacity="0.9" />
+    <path d="M18 12l6 10H12z" fill="#fff7d3" opacity="0.7" />
+    <path d="M46 12l6 10H40z" fill="#fff7d3" opacity="0.7" />
+  </g>
+
+  <g fill="#11283b">
+    <rect x="30" y="17" width="4" height="24" rx="2" />
+    <rect x="22" y="18" width="20" height="3" rx="1.5" />
+    <path d="M20 24c3 5 4 8 4 10a6 6 0 0 1-12 0c0-2 1-5 4-10h4z" />
+    <path d="M48 24c3 5 4 8 4 10a6 6 0 0 1-12 0c0-2 1-5 4-10h4z" />
+    <path d="M14 39h36a2 2 0 0 1 2 2v4H12v-4a2 2 0 0 1 2-2z" />
+    <path d="M16 45h32l5 3H11z" />
+  </g>
+
+  <g transform="translate(18 48)">
+    <rect x="-3" y="3" width="6" height="8" fill="#2353b8" />
+    <rect x="5" y="0" width="6" height="11" fill="#84b800" />
+    <rect x="13" y="-3" width="6" height="14" fill="#78b700" />
+    <rect x="21" y="-5" width="6" height="16" fill="#ff7d00" />
+  </g>
+
+  <path
+    d="M14 17c0-5 3.7-8.4 8.5-8.4 4.2 0 7.4 2.6 7.4 6.5 0 2.6-1.2 4-3.6 5.8-2.2 1.6-2.7 2.5-2.7 4.1v1.1h-4.6v-1.5c0-2.4 1.1-4 3.2-5.7 2.1-1.6 2.8-2.4 2.8-3.8 0-1.7-1.3-2.9-3.2-2.9-2.2 0-3.7 1.5-3.7 4.1H14zm5.1 14.8c0-1.8 1.3-3.1 3.1-3.1s3.1 1.3 3.1 3.1-1.3 3.1-3.1 3.1-3.1-1.3-3.1-3.1z"
+    fill="url(#question)"
+    stroke="#9f1800"
+    stroke-width="0.6"
+  />
+
+  <path
+    d="M45.5 12.5l-7.1 7.2-3.5-3.4-3 3 6.4 6.3 10.1-10.1z"
+    fill="url(#check)"
+    stroke="#215900"
+    stroke-width="0.8"
+    stroke-linejoin="round"
+  />
+</svg>
