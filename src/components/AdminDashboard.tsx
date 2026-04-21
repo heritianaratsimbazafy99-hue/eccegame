@@ -15,6 +15,7 @@ import {
   labelDecision,
   labelTruth
 } from "../lib/utils";
+import { toReadableFrench } from "../lib/readableFrench";
 
 type AdminTab = "operation" | "responses" | "teams";
 
@@ -112,9 +113,9 @@ function TeamDetails({
       <div className="team-details-body">
         <div className="section-card">
           <div className="section-title">Scenario d'operation</div>
-          <h3>{team.scenarioTitle}</h3>
-          <p>{team.atmosphere}</p>
-          <p>{team.situation}</p>
+          <h3>{toReadableFrench(team.scenarioTitle)}</h3>
+          <p>{toReadableFrench(team.atmosphere)}</p>
+          <p>{toReadableFrench(team.situation)}</p>
         </div>
 
         <div className="admin-callout subtle">
@@ -125,8 +126,8 @@ function TeamDetails({
           {team.options.map((option) => (
             <article className="decision-card" key={option.id}>
               <div className="decision-tag">Décision {option.id}</div>
-              <h4>{option.title}</h4>
-              <p>{option.description}</p>
+              <h4>{toReadableFrench(option.title)}</h4>
+              <p>{toReadableFrench(option.description)}</p>
             </article>
           ))}
         </div>
@@ -136,7 +137,7 @@ function TeamDetails({
             <span className="section-title">Lecture animateur</span>
             <h3>{labelDecision(team.correctDecision)}</h3>
           </div>
-          <p>{team.rationale}</p>
+          <p>{toReadableFrench(team.rationale)}</p>
         </div>
 
         <div className="intruder-admin-panel">
@@ -191,7 +192,7 @@ function TeamDetails({
                 <div className="participant-admin-header">
                   <div>
                     <div className="eyebrow">{card.participantName}</div>
-                    <h4>{card.headline}</h4>
+                    <h4>{toReadableFrench(card.headline)}</h4>
                     <p className="muted-line">{participant?.service || participant?.direction}</p>
                   </div>
                   <div className="chip-row compact-chip-row">
@@ -199,13 +200,13 @@ function TeamDetails({
                     {card.isIntruder ? <span className="truth-chip truth-false">Intrus</span> : null}
                   </div>
                 </div>
-                <p>{card.body}</p>
+                <p>{toReadableFrench(card.body)}</p>
                 <div className="admin-callout">
                   <strong>Lecture operateur:</strong> {card.adminTruth}
                 </div>
                 {card.isIntruder && card.sabotageBrief ? (
                   <div className="admin-callout intruder-callout">
-                    <strong>Brief clandestin:</strong> {card.sabotageBrief}
+                    <strong>Brief clandestin:</strong> {toReadableFrench(card.sabotageBrief)}
                   </div>
                 ) : null}
                 {guesses[card.id] ? (

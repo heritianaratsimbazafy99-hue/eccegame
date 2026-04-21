@@ -1,4 +1,5 @@
 import type { IntruderGuessRecord, TeamGame } from "../types";
+import { toReadableFrench } from "../lib/readableFrench";
 import { buildCardUrl, labelDecision, labelTruth } from "../lib/utils";
 
 interface FacilitatorViewProps {
@@ -42,17 +43,17 @@ export default function FacilitatorView({
 
       <section className="panel">
         <div className="eyebrow">Dossier animateur • {team.name}</div>
-        <h1>{team.scenarioTitle}</h1>
-        <p className="lead">{team.atmosphere}</p>
+        <h1>{toReadableFrench(team.scenarioTitle)}</h1>
+        <p className="lead">{toReadableFrench(team.atmosphere)}</p>
         <p className="muted-line">{team.mixSummary}</p>
-        <p>{team.situation}</p>
+        <p>{toReadableFrench(team.situation)}</p>
 
         <div className="decision-grid">
           {team.options.map((option) => (
             <article className="decision-card" key={option.id}>
               <div className="decision-tag">Décision {option.id}</div>
-              <h3>{option.title}</h3>
-              <p>{option.description}</p>
+              <h3>{toReadableFrench(option.title)}</h3>
+              <p>{toReadableFrench(option.description)}</p>
             </article>
           ))}
         </div>
@@ -62,7 +63,7 @@ export default function FacilitatorView({
             <span className="section-title">Lecture animateur</span>
             <h2>{labelDecision(team.correctDecision)}</h2>
           </div>
-          <p>{team.rationale}</p>
+          <p>{toReadableFrench(team.rationale)}</p>
         </div>
 
         <div className="intruder-admin-panel">
@@ -100,20 +101,20 @@ export default function FacilitatorView({
               <div className="facilitator-card-header">
                 <div>
                   <div className="eyebrow">{card.participantName}</div>
-                  <h3>{card.headline}</h3>
+                  <h3>{toReadableFrench(card.headline)}</h3>
                 </div>
                 <div className="chip-row compact-chip-row">
                   <span className={`truth-chip truth-${card.truthType}`}>{labelTruth(card.truthType)}</span>
                   {card.isIntruder ? <span className="truth-chip truth-false">Intrus</span> : null}
                 </div>
               </div>
-              <p>{card.body}</p>
+              <p>{toReadableFrench(card.body)}</p>
               <div className="admin-callout">
                 <strong>Lecture operateur:</strong> {card.adminTruth}
               </div>
               {card.isIntruder && card.sabotageBrief ? (
                 <div className="admin-callout intruder-callout">
-                  <strong>Brief clandestin:</strong> {card.sabotageBrief}
+                  <strong>Brief clandestin:</strong> {toReadableFrench(card.sabotageBrief)}
                 </div>
               ) : null}
               {guesses[card.id] ? (

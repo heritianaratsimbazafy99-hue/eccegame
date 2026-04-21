@@ -5,6 +5,7 @@ import type {
   TeamGame,
   VoteChoice
 } from "../types";
+import { toReadableFrench } from "../lib/readableFrench";
 
 const LOCK_DELAY_SECONDS = 10;
 
@@ -151,20 +152,20 @@ export default function ParticipantCardView({
         <div className="card-intel-header">
           <div className="eyebrow">Dossier agent • {team.name}</div>
           <h1>{card.participantName}</h1>
-          <p className="lead">{team.atmosphere}</p>
+          <p className="lead">{toReadableFrench(team.atmosphere)}</p>
         </div>
 
         <div className="section-card">
-          <div className="section-title">Scene du chaos</div>
-          <p>{team.situation}</p>
+          <div className="section-title">Contexte</div>
+          <p>{toReadableFrench(team.situation)}</p>
         </div>
 
         <div className="section-card highlight-card">
-          <div className="section-title">Carte a jouer</div>
-          <h2>{card.headline}</h2>
-          <p>{card.body}</p>
+          <div className="section-title">Ta carte</div>
+          <h2>{toReadableFrench(card.headline)}</h2>
+          <p>{toReadableFrench(card.body)}</p>
           <div className="share-callout">
-            <strong>A lacher dans l&apos;arene:</strong> {card.sharePrompt}
+            <strong>À dire dans le débat :</strong> {toReadableFrench(card.sharePrompt)}
           </div>
         </div>
 
@@ -179,9 +180,9 @@ export default function ParticipantCardView({
                 </span>
               ) : null}
             </div>
-            <p>{card.sabotageBrief}</p>
+            <p>{card.sabotageBrief ? toReadableFrench(card.sabotageBrief) : ""}</p>
             <div className="share-callout sabotage-callout">
-              <strong>Objectif discret:</strong> fais paraitre l&apos;option {card.sabotageChoice} plus
+              <strong>Objectif discret :</strong> fais paraitre l&apos;option {card.sabotageChoice} plus
               rassurante, plus cool ou plus heroique qu&apos;elle ne l&apos;est vraiment.
             </div>
           </div>
@@ -191,17 +192,17 @@ export default function ParticipantCardView({
           {team.options.map((option) => (
             <article className="decision-card" key={option.id}>
               <div className="decision-tag">Décision {option.id}</div>
-              <h3>{option.title}</h3>
-              <p>{option.description}</p>
+              <h3>{toReadableFrench(option.title)}</h3>
+              <p>{toReadableFrench(option.description)}</p>
             </article>
           ))}
         </div>
 
         <div className="section-card vote-lock-card">
-          <div className="section-title">Dernier pari</div>
+          <div className="section-title">Ton choix final</div>
           <p>
-            Choisis ton instinct, pas ton voisin. Une fois le compte a rebours termine, ton
-            choix part en transmission definitive et il n&apos;y a plus de marche arriere.
+            Choisis toi-meme. Quand le compte a rebours finit, ton choix part pour de bon et
+            tu ne peux plus le changer.
           </p>
 
           {voteError ? <div className="warning-card inline-warning">{voteError}</div> : null}

@@ -68,6 +68,7 @@ Original prompt: Tu vas me coder une application simple, rapide et exploitable i
 - 2026-04-21: Suppression de la logique des 10 équipes fixes; les équipes sont maintenant calculées automatiquement pour rester équilibrées avec un plafond de 11 participants par équipe.
 - 2026-04-21: Nouveau format DAF activé: plafond ramené à 5 participants par équipe pour obtenir des groupes homogènes de type `5/5/5/4` sur un roster de 19 personnes.
 - 2026-04-21: Remplacement des anciens scénarios par 4 missions plus lisibles et plus distinctes pour les petites équipes (`Bal des Doubles`, `Train Minuit`, `Musée des Ombres`, `Port des Brumes`) avec cartes plus claires mais toujours ambiguës.
+- 2026-04-22: Simplification du français à l'affichage sur les vues joueur/admin/animateur/debrief via une couche de reformulation légère, sans régénération des cartes ni changement d'URL/QR.
 
 TODO
 - Tester la soumission de vote depuis deux appareils réels sur le même réseau local pour valider la boucle complète front -> API -> admin.
