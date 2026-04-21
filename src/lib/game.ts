@@ -1043,7 +1043,7 @@ interface FictionDeckFlavor {
   trophy: string;
 }
 
-export const GAME_CONTENT_VERSION = 4;
+export const GAME_CONTENT_VERSION = 5;
 
 const UNIQUE_TEAM_ARCHETYPES: Archetype[] = [
   "sales-enterprise",
@@ -1057,6 +1057,410 @@ const UNIQUE_TEAM_ARCHETYPES: Archetype[] = [
   "governance",
   "strategy"
 ];
+
+const SMALL_TEAM_MISSIONS: ScenarioBlueprint[] = [
+  {
+    scenarioTitle: "Bal des Doubles",
+    atmosphere:
+      "Grand hotel, miroirs partout, invités masqués et quatuor à cordes très fier de lui. Tout paraît chic, donc tout paraît suspect.",
+    situation:
+      "Pendant un gala masqué, une micro-carte doit changer de main sur un balcon privé. Deux stratégies s'opposent: figer toute la salle et contrôler tout le monde, ou laisser la fête continuer pour suivre seulement trois masques très précis.",
+    options: [
+      {
+        id: "A",
+        title: "Geler toute la salle",
+        description:
+          "Couper la musique, fermer les portes et fouiller chaque invité avant qu'il ne bouge d'un pas."
+      },
+      {
+        id: "B",
+        title: "Suivre trois masques précis",
+        description:
+          "Laisser le gala respirer, surveiller trois suspects-clés et intercepter l'échange au balcon."
+      }
+    ],
+    correctDecision: "B",
+    rationale:
+      "La bonne piste consistait à rester discret et à suivre le petit groupe qui avait vraiment accès au balcon. Le grand gel de salle paraissait rassurant, mais il déclenchait surtout du chaos et noyait le bon échange dans la foule.",
+    decks: {
+      true: [
+        {
+          headline: "Trois masques, pas cinquante",
+          body:
+            "Les caméras de service montrent que seuls trois invités ont franchi deux fois le cordon du balcon privé. Personne d'autre n'a ce trajet répétitif.",
+          sharePrompt:
+            "Insiste sur le fait que le balcon n'est pas un lieu ouvert à toute la salle.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "La musique est le couvercle",
+          body:
+            "Le maître d'hôtel confirme qu'une interruption brutale du quatuor crée toujours un mouvement de foule vers les sorties latérales. Le balcon devient alors impossible à surveiller proprement.",
+          sharePrompt:
+            "Rappelle qu'un beau plan d'arrêt total peut fabriquer un meilleur écran de fuite que la fête elle-même.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "Un valet a vu passer la même enveloppe",
+          body:
+            "Un valet affirme avoir servi deux fois la même enveloppe noire à la femme au masque renard argenté, jamais à un autre invité.",
+          sharePrompt:
+            "Glisse que certains objets voyagent déjà entre très peu de mains.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "L'escalier discret reste ouvert",
+          body:
+            "Le petit escalier de service derrière le balcon est peu gardé après minuit. C'est parfait pour une interception ciblée, moins pour une panique générale.",
+          sharePrompt:
+            "Fais remarquer qu'un point de sortie discret vaut plus qu'un plan spectaculaire.",
+          adminTruth: "Vrai."
+        }
+      ],
+      partial: [
+        {
+          headline: "Le barman adore les coupures de musique",
+          body:
+            "Le barman dit qu'à chaque incident sonore, les invités se lèvent d'un bloc et plusieurs personnes changent de table sans qu'on puisse suivre qui est qui. Il a vu ça, mais pas ce soir.",
+          sharePrompt:
+            "Présente-le comme un indice crédible sur le désordre probable, pas comme une preuve absolue.",
+          adminTruth: "Partiel."
+        },
+        {
+          headline: "Invitations jumelles",
+          body:
+            "La fleuriste a aperçu deux cartons d'invitation quasi identiques avec un sceau légèrement différent. Ça suggère des doublures, sans dire qui les porte.",
+          sharePrompt:
+            "Utilise-le pour nourrir le doute sur les identités, pas pour désigner un coupable trop vite.",
+          adminTruth: "Partiel."
+        }
+      ],
+      false: [
+        {
+          headline: "Le chef sécurité promet un gel parfait",
+          body:
+            "Selon le chef sécurité, il peut verrouiller la salle entière en moins de 90 secondes sans provoquer aucun mouvement parasite. Il le dit avec beaucoup trop de confiance.",
+          sharePrompt:
+            "Questionne la crédibilité d'un verrouillage total sans chaos dans un gala bondé.",
+          adminTruth: "Faux."
+        },
+        {
+          headline: "La liste des invités suffit",
+          body:
+            "L'organisatrice assure qu'en comparant rapidement les badges à la liste imprimée, les fausses identités tomberont toutes seules.",
+          sharePrompt:
+            "Fais sentir que les listes rassurent souvent plus qu'elles ne protègent.",
+          adminTruth: "Faux."
+        }
+      ]
+    }
+  },
+  {
+    scenarioTitle: "Train Minuit",
+    atmosphere:
+      "Un train de nuit file sous la pluie, les lumières vacillent juste assez pour rendre tout le monde un peu héroïque et un peu mauvais en idées.",
+    situation:
+      "Un code verbal doit être transmis dans le wagon 7 avant le prochain tunnel. Vous hésitez entre verrouiller immédiatement ce wagon pour contrôler l'échange sur place, ou laisser le train rouler et miser sur un vol de badge du contrôleur pour suivre les suspects plus tard.",
+    options: [
+      {
+        id: "A",
+        title: "Verrouiller le wagon 7",
+        description:
+          "Isoler le wagon cible maintenant et contrôler qui entre, qui sort et ce qui s'y échange."
+      },
+      {
+        id: "B",
+        title: "Voler le badge du contrôleur",
+        description:
+          "Laisser l'échange démarrer, puis imiter un agent du train pour filer les suspects à distance."
+      }
+    ],
+    correctDecision: "A",
+    rationale:
+      "Le bon choix était de verrouiller vite le bon wagon. Le plan du badge paraissait élégant, mais il arrivait trop tard et dépendait d'un montage humain trop fragile pour une fenêtre aussi courte.",
+    decks: {
+      true: [
+        {
+          headline: "Le message ne sera dit qu'une fois",
+          body:
+            "L'informateur de bord affirme que le code verbal sera prononcé juste avant l'entrée dans le tunnel, une seule fois, dans le wagon 7.",
+          sharePrompt:
+            "Rappelle qu'un échange unique favorise l'interception immédiate, pas la belle filature après coup.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "Le faux contrôleur manque une pièce",
+          body:
+            "Le plan de vol de badge suppose deux complices: un pour détourner le vrai contrôleur, un pour récupérer sa tablette. Or le deuxième complice n'est pas en place.",
+          sharePrompt:
+            "Souligne que le plan B n'est pas juste risqué: il est incomplet.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "Le frein d'urgence du wagon 7 est bloqué",
+          body:
+            "Le technicien a signalé un frein d'urgence coincé dans le wagon 7. Si ça s'agite après le tunnel, personne ne ralentira proprement la rame à temps.",
+          sharePrompt:
+            "Utilise ce détail pour montrer que laisser filer le train enlève des options au lieu d'en offrir.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "Le colis ne saute pas d'un train lancé",
+          body:
+            "Le colis recherché est décrit comme volumineux et rigide. Le sortir discrètement du train après le tunnel serait bien plus difficile qu'un contrôle du wagon sur place.",
+          sharePrompt:
+            "Ramène le débat au concret: certains objets n'aiment pas les plans de cascade.",
+          adminTruth: "Vrai."
+        }
+      ],
+      partial: [
+        {
+          headline: "Le vendeur de thé adore les rumeurs",
+          body:
+            "Le vendeur de thé jure que le contrôleur disparaît souvent entre les wagons 6 et 7. C'est plausible, mais il dramatise chaque nuit un peu plus que la précédente.",
+          sharePrompt:
+            "Sers-t'en comme indice de circulation du contrôleur, pas comme preuve que le plan badge est solide.",
+          adminTruth: "Partiel."
+        },
+        {
+          headline: "Une fenêtre ferme mal",
+          body:
+            "Une fenêtre du wagon 7 ferme mal depuis le départ. Ce n'est pas un accès idéal, mais ça veut dire que le wagon n'est pas totalement neutre.",
+          sharePrompt:
+            "Pose-le comme élément de fragilité, pas comme argument décisif pour l'une des deux options.",
+          adminTruth: "Partiel."
+        }
+      ],
+      false: [
+        {
+          headline: "Le faux badge est déjà prêt",
+          body:
+            "La cellule support affirme qu'une copie parfaite du badge du contrôleur peut être livrée avant le tunnel. Aucun signe concret ne le confirme.",
+          sharePrompt:
+            "Demande qui l'a vue et quand, pas seulement qui l'a promise.",
+          adminTruth: "Faux."
+        },
+        {
+          headline: "Les suspects n'agissent que si le train s'arrête",
+          body:
+            "Une rumeur de couloir dit que les suspects annulent toujours leurs échanges dans un train en mouvement. C'est pratique pour justifier l'inaction, pas pour décider.",
+          sharePrompt:
+            "Traite ce récit comme un mythe confortable, pas comme un fait.",
+          adminTruth: "Faux."
+        }
+      ]
+    }
+  },
+  {
+    scenarioTitle: "Musée des Ombres",
+    atmosphere:
+      "Le musée est fermé au public, mais pas au mensonge. Entre vitrines, ombres longues et chaussures qui claquent trop fort, tout semble élégant et légèrement piégé.",
+    situation:
+      "Une statuette doit être échangée contre une copie pendant une visite privée. Deux plans divisent l'équipe: couper la lumière de toute l'aile ouest pour bloquer les regards, ou garder la lumière et piéger la seule sortie du monte-charge utilisée pour transporter les caisses.",
+    options: [
+      {
+        id: "A",
+        title: "Plonger l'aile ouest dans le noir",
+        description:
+          "Couper la lumière et profiter du chaos visuel pour isoler les voleurs dans la confusion."
+      },
+      {
+        id: "B",
+        title: "Piéger la sortie du monte-charge",
+        description:
+          "Laisser la visite continuer et capturer l'échange au point logistique le plus obligé."
+      }
+    ],
+    correctDecision: "B",
+    rationale:
+      "Le bon choix était de tenir le point logistique inévitable. La coupure de lumière semblait dramatique et séduisante, mais elle désactivait aussi des protections utiles et rendait l'aile bien plus dure à lire.",
+    decks: {
+      true: [
+        {
+          headline: "La copie ne passe pas par l'escalier",
+          body:
+            "La copie préparée pour l'échange est logée dans une caisse trop lourde pour l'escalier secondaire. Le monte-charge est son passage logique.",
+          sharePrompt:
+            "Rappelle qu'un objet encombrant adore les routes obligatoires.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "Le noir coupe aussi le filet",
+          body:
+            "Le chef maintenance confirme qu'une coupure générale dans l'aile ouest remet les lasers en redémarrage pendant près de 90 secondes.",
+          sharePrompt:
+            "Souligne qu'éteindre n'annule pas juste la vue des autres, mais aussi une partie de vos propres sécurités.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "Le monte-charge a été testé trop tard",
+          body:
+            "Le registre technique montre un test inhabituel du monte-charge à 22h40, bien après la fermeture habituelle du musée.",
+          sharePrompt:
+            "Utilise ce détail pour recentrer le débat sur l'itinéraire logistique plutôt que sur le grand effet de théâtre.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "La porte quai sonne avec la cabine",
+          body:
+            "L'alarme de la porte quai se déclenche au cycle du monte-charge. Si la caisse descend, vous avez un point de capture précis.",
+          sharePrompt:
+            "Montre qu'un bon piège vaut souvent mieux qu'un grand noir total.",
+          adminTruth: "Vrai."
+        }
+      ],
+      partial: [
+        {
+          headline: "Les visiteurs paniquent vite dans le noir",
+          body:
+            "Un gardien assure que les invités se collent aussitôt au grand hall dès qu'une aile s'éteint. C'est plausible, mais cela dépend beaucoup de qui est présent.",
+          sharePrompt:
+            "Cite-le comme élément de risque humain, pas comme certitude absolue.",
+          adminTruth: "Partiel."
+        },
+        {
+          headline: "La restauratrice doute de la taille de la caisse",
+          body:
+            "La restauratrice pense que la nouvelle caisse est un peu plus fine que la précédente. Elle ne l'a pas mesurée, elle l'a seulement croisée de loin.",
+          sharePrompt:
+            "Présente cette info comme un doute intéressant, pas comme une preuve que la caisse peut tout faire.",
+          adminTruth: "Partiel."
+        }
+      ],
+      false: [
+        {
+          headline: "Le noir garde les lasers intacts",
+          body:
+            "Un stagiaire affirme que les lasers restent actifs sur batterie pendant toute coupure. Il mélange clairement plusieurs systèmes.",
+          sharePrompt:
+            "Demande qui a validé cette affirmation technique avant de lui faire confiance.",
+          adminTruth: "Faux."
+        },
+        {
+          headline: "Les voleurs détestent la lumière",
+          body:
+            "Un mécène VIP jure que toute équipe sérieuse annule immédiatement une opération si la lumière reste stable et visible. C'est surtout une opinion très chic.",
+          sharePrompt:
+            "Traite cette phrase comme un slogan de cocktail, pas comme un renseignement.",
+          adminTruth: "Faux."
+        }
+      ]
+    }
+  },
+  {
+    scenarioTitle: "Port des Brumes",
+    atmosphere:
+      "De la brume, des grues, des bottes mouillées et cette sensation désagréable que le quai écoute aussi bien qu'il cache.",
+    situation:
+      "Un coffre doit être récupéré sur un quai noyé de brouillard avant la marée haute. Deux plans s'affrontent: allumer tous les projecteurs pour nettoyer la zone à vue, ou laisser la brume vivre et verrouiller discrètement la seule grue capable de manipuler le coffre.",
+    options: [
+      {
+        id: "A",
+        title: "Allumer tous les projecteurs",
+        description:
+          "Transformer le quai en plein jour et empêcher toute approche discrète par la lumière."
+      },
+      {
+        id: "B",
+        title: "Verrouiller la grue n°3",
+        description:
+          "Cibler le seul point technique indispensable et attendre l'échange là où il devra forcément passer."
+      }
+    ],
+    correctDecision: "B",
+    rationale:
+      "La bonne réponse consistait à verrouiller le point indispensable. Les grands projecteurs promettaient du contrôle, mais ils donnaient surtout l'alerte et dégradaient la discrétion de l'équipe au mauvais moment.",
+    decks: {
+      true: [
+        {
+          headline: "Une seule grue fait l'affaire",
+          body:
+            "Le plan du quai indique que seule la grue n°3 a la bonne tête de crochet pour soulever le coffre sans le casser.",
+          sharePrompt:
+            "Ramène le débat à cette idée simple: si un seul outil marche, il vaut peut-être mieux tenir l'outil que tout éclairer.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "La lumière vous trahit aussi",
+          body:
+            "Les projecteurs de quai dessinent des silhouettes nettes depuis la mer. Une équipe bien placée au large verrait immédiatement qui se déploie à terre.",
+          sharePrompt:
+            "Souligne qu'éclairer l'ennemi, c'est parfois s'éclairer soi-même encore plus.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "La marée ne laisse pas le temps de changer de quai",
+          body:
+            "La fenêtre de manœuvre ne dure que quelques minutes. Changer de quai ferait perdre le passage du coffre.",
+          sharePrompt:
+            "Insiste sur le fait que le timing réduit beaucoup la liberté réelle des suspects.",
+          adminTruth: "Vrai."
+        },
+        {
+          headline: "Le trajet sec passe derrière la grue 3",
+          body:
+            "Sur plan, la seule trajectoire encore praticable sans flaques profondes passe derrière le hangar de la grue 3.",
+          sharePrompt:
+            "Glisse qu'un passage obligé vaut plus qu'un grand bain de lumière.",
+          adminTruth: "Vrai."
+        }
+      ],
+      partial: [
+        {
+          headline: "Un plongeur parle d'un second zodiac",
+          body:
+            "Un plongeur a cru distinguer une deuxième embarcation au large, mais la brume était épaisse et il n'a pas confirmé visuellement.",
+          sharePrompt:
+            "Utilise cette info pour ajouter du doute sur les renforts, pas pour refaire tout le plan dessus.",
+          adminTruth: "Partiel."
+        },
+        {
+          headline: "Le panneau de lampes fatigue sous la pluie",
+          body:
+            "Un cariste affirme que le panneau des projecteurs saute souvent quand l'humidité grimpe. Il connaît le quai, mais il exagère parfois ses anecdotes.",
+          sharePrompt:
+            "Présente-le comme un risque technique possible, pas comme une panne certaine.",
+          adminTruth: "Partiel."
+        }
+      ],
+      false: [
+        {
+          headline: "Toutes les grues se valent",
+          body:
+            "Le responsable de permanence prétend que n'importe quelle grue du port peut déplacer le coffre. Le plan matériel dit l'inverse.",
+          sharePrompt:
+            "Questionne ce genre d'affirmation trop pratique pour être vraie.",
+          adminTruth: "Faux."
+        },
+        {
+          headline: "L'échange est déjà dans la douane",
+          body:
+            "Une rumeur insiste sur un transfert déjà lancé dans le bâtiment de la douane. Aucun mouvement réel ne l'appuie.",
+          sharePrompt:
+            "Traite-le comme un leurre parfait pour détourner l'équipe du quai.",
+          adminTruth: "Faux."
+        }
+      ]
+    }
+  }
+];
+
+function buildSmallTeamMission(index: number): ScenarioBlueprint {
+  const mission = SMALL_TEAM_MISSIONS[index % SMALL_TEAM_MISSIONS.length];
+
+  return {
+    ...mission,
+    options: mission.options.map((option) => ({ ...option })) as [
+      TeamGame["options"][0],
+      TeamGame["options"][1]
+    ],
+    decks: {
+      true: mission.decks.true.map((card) => ({ ...card })),
+      partial: mission.decks.partial.map((card) => ({ ...card })),
+      false: mission.decks.false.map((card) => ({ ...card }))
+    }
+  };
+}
 
 function getFictionDeckFlavor(archetype: Archetype): FictionDeckFlavor {
   switch (archetype) {
@@ -3157,10 +3561,16 @@ function buildScenarioBlueprint(teamName: string, archetype: Archetype): Scenari
   }
 }
 
-function buildCards(team: TeamGame, stableSeed: string): GeneratedCard[] {
+function buildCards(
+  team: TeamGame,
+  stableSeed: string,
+  scenarioOverride?: ScenarioBlueprint
+): GeneratedCard[] {
   const rng = createRng(`${team.id}-${stableSeed}`);
   const distribution = getTruthDistribution(team.participants.length);
-  const blueprint = buildScenarioForTeam(team.name, team.archetype as Archetype, `${team.id}-${stableSeed}`);
+  const blueprint =
+    scenarioOverride ??
+    buildScenarioForTeam(team.name, team.archetype as Archetype, `${team.id}-${stableSeed}`);
 
   const deckByTruth: Record<CardTruth, CardTemplate[]> = {
     true: shuffleArray(
@@ -3210,7 +3620,7 @@ function resolveRoleLabel(participant: Participant): string {
   return participant.service || participant.direction || participant.teamName || "Direction non precisee";
 }
 
-const MAX_PARTICIPANTS_PER_TEAM = 11;
+const MAX_PARTICIPANTS_PER_TEAM = 5;
 
 function buildTargetTeamSizes(participantCount: number): number[] {
   if (participantCount <= 0) {
@@ -3430,15 +3840,16 @@ export function generateGame(participants: Participant[], sourceName: string): G
       .join("|")}`
   );
   const balancedTeams = assignBalancedTeams(participants, stableSeed);
+  const useSmallTeamMissionSet =
+    balancedTeams.length === SMALL_TEAM_MISSIONS.length &&
+    balancedTeams.every((team) => team.participants.length <= MAX_PARTICIPANTS_PER_TEAM);
 
   const teams = balancedTeams
     .map((balancedTeam, index) => {
       const archetype = UNIQUE_TEAM_ARCHETYPES[index % UNIQUE_TEAM_ARCHETYPES.length];
-      const scenario = buildScenarioForTeam(
-        balancedTeam.name,
-        archetype,
-        `${balancedTeam.id}-${stableSeed}`
-      );
+      const scenario = useSmallTeamMissionSet
+        ? buildSmallTeamMission(index)
+        : buildScenarioForTeam(balancedTeam.name, archetype, `${balancedTeam.id}-${stableSeed}`);
       const team: TeamGame = {
         id: balancedTeam.id,
         name: balancedTeam.name,
@@ -3458,7 +3869,7 @@ export function generateGame(participants: Participant[], sourceName: string): G
         intruderIds: [],
         truthCounts: getTruthDistribution(balancedTeam.participants.length)
       };
-      team.cards = buildCards(team, stableSeed);
+      team.cards = buildCards(team, stableSeed, scenario);
       return assignIntrudersToTeam(team, stableSeed);
     })
     .sort((left, right) => extractTeamNumber(left.name) - extractTeamNumber(right.name));
