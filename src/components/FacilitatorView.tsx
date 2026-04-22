@@ -1,5 +1,5 @@
 import type { IntruderGuessRecord, TeamGame } from "../types";
-import { toReadableFrench } from "../lib/readableFrench";
+import { getDisplayedCardCopy, getDisplayedTeamCopy } from "../lib/partTwoCopy";
 import { buildCardUrl, labelDecision, labelTruth } from "../lib/utils";
 
 interface FacilitatorViewProps {
@@ -19,8 +19,9 @@ export default function FacilitatorView({
   onBack,
   onOpenRestitution
 }: FacilitatorViewProps) {
+  const displayedTeam = getDisplayedTeamCopy(team);
   const intruders = team.participants.filter((participant) =>
-    team.intruderIds.includes(participant.id)
+    displayedTeam.intruderIds.includes(participant.id)
   );
   const suspicionLogs = team.cards
     .map((card) => guesses[card.id])
@@ -43,17 +44,17 @@ export default function FacilitatorView({
 
       <section className="panel">
         <div className="eyebrow">Dossier animateur • {team.name}</div>
-        <h1>{toReadableFrench(team.scenarioTitle)}</h1>
-        <p className="lead">{toReadableFrench(team.atmosphere)}</p>
+        <h1>{displayedTeam.scenarioTitle}</h1>
+        <p className="lead">{displayedTeam.atmosphere}</p>
         <p className="muted-line">{team.mixSummary}</p>
-        <p>{toReadableFrench(team.situation)}</p>
+        <p>{displayedTeam.situation}</p>
 
         <div className="decision-grid">
-          {team.options.map((option) => (
+          {displayedTeam.options.map((option) => (
             <article className="decision-card" key={option.id}>
               <div className="decision-tag">Décision {option.id}</div>
-              <h3>{toReadableFrench(option.title)}</h3>
-              <p>{toReadableFrench(option.description)}</p>
+              <h3>{option.title}</h3>
+              <p>{option.description}</p>
             </article>
           ))}
         </div>
@@ -61,17 +62,17 @@ export default function FacilitatorView({
         <div className="admin-answer">
           <div>
             <span className="section-title">Lecture animateur</span>
-            <h2>{labelDecision(team.correctDecision)}</h2>
+            <h2>{labelDecision(displayedTeam.correctDecision)}</h2>
           </div>
-          <p>{toReadableFrench(team.rationale)}</p>
+          <p>{displayedTeam.rationale}</p>
         </div>
 
         <div className="intruder-admin-panel">
           <div className="section-title">Cellule d&apos;intrusion</div>
           <div className="chip-row">
             <span className="truth-chip truth-false">Intrus: {intruders.length}</span>
-            <span className={`vote-pill vote-${team.sabotageDecision}`}>
-              Mauvaise option a vendre: {team.sabotageDecision}
+            <span className={`vote-pill vote-${displayedTeam.sabotageDecision}`}>
+              Mauvaise option a vendre: {displayedTeam.sabotageDecision}
             </span>
             <span className="vote-pill vote-pending">
               Soupçons recus: {suspicionLogs.length}/{team.cards.length}
@@ -96,25 +97,28 @@ export default function FacilitatorView({
         </div>
 
         <div className="facilitator-card-grid">
-          {team.cards.map((card) => (
-            <article className="facilitator-card" key={card.id}>
+          {team.cards.map((card) => {
+            const displayedCard = getDisplayedCardCopy(team, card);
+
+            return (
+              <article className="facilitator-card" key={card.id}>
               <div className="facilitator-card-header">
                 <div>
                   <div className="eyebrow">{card.participantName}</div>
-                  <h3>{toReadableFrench(card.headline)}</h3>
+                  <h3>{displayedCard.headline}</h3>
                 </div>
                 <div className="chip-row compact-chip-row">
                   <span className={`truth-chip truth-${card.truthType}`}>{labelTruth(card.truthType)}</span>
-                  {card.isIntruder ? <span className="truth-chip truth-false">Intrus</span> : null}
+                  {displayedCard.isIntruder ? <span className="truth-chip truth-false">Intrus</span> : null}
                 </div>
               </div>
-              <p>{toReadableFrench(card.body)}</p>
+              <p>{displayedCard.body}</p>
               <div className="admin-callout">
-                <strong>Lecture operateur:</strong> {card.adminTruth}
+                <strong>Lecture operateur:</strong> {displayedCard.adminTruth}
               </div>
-              {card.isIntruder && card.sabotageBrief ? (
+              {displayedCard.isIntruder && displayedCard.sabotageBrief ? (
                 <div className="admin-callout intruder-callout">
-                  <strong>Brief clandestin:</strong> {toReadableFrench(card.sabotageBrief)}
+                  <strong>Brief clandestin:</strong> {displayedCard.sabotageBrief}
                 </div>
               ) : null}
               {guesses[card.id] ? (
@@ -131,8 +135,9 @@ export default function FacilitatorView({
               ) : (
                 <div className="qr-placeholder">QR en génération…</div>
               )}
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
         <div className="resti-snapshot accusation-panel">

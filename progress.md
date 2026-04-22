@@ -69,6 +69,8 @@ Original prompt: Tu vas me coder une application simple, rapide et exploitable i
 - 2026-04-21: Nouveau format DAF activé: plafond ramené à 5 participants par équipe pour obtenir des groupes homogènes de type `5/5/5/4` sur un roster de 19 personnes.
 - 2026-04-21: Remplacement des anciens scénarios par 4 missions plus lisibles et plus distinctes pour les petites équipes (`Bal des Doubles`, `Train Minuit`, `Musée des Ombres`, `Port des Brumes`) avec cartes plus claires mais toujours ambiguës.
 - 2026-04-22: Simplification du français à l'affichage sur les vues joueur/admin/animateur/debrief via une couche de reformulation légère, sans régénération des cartes ni changement d'URL/QR.
+- 2026-04-22: Ajout d'une couche d'affichage "partie 2" avec nouveaux titres de missions, nouveaux contextes, nouvelles formulations de cartes et de choix, sans toucher au snapshot ni aux `cardId`, donc sans casser les QR déjà générés.
+- 2026-04-22: Refonte complète de la couche d'affichage "partie 2" pour en faire une vraie nouvelle manche: nouveaux univers visibles (`Escape Game`, `Laser Game`, `Battle de Cuisine`, `Fête Foraine`), nouvelles bonnes réponses visibles et nouveaux intrus visibles, sans changer les QR.
 
 TODO
 - Tester la soumission de vote depuis deux appareils réels sur le même réseau local pour valider la boucle complète front -> API -> admin.

@@ -5,7 +5,7 @@ import type {
   TeamGame,
   VoteChoice
 } from "../types";
-import { toReadableFrench } from "../lib/readableFrench";
+import { getDisplayedCardCopy, getDisplayedTeamCopy } from "../lib/partTwoCopy";
 
 const LOCK_DELAY_SECONDS = 10;
 
@@ -45,6 +45,8 @@ export default function ParticipantCardView({
     () => team.participants.filter((participant) => participant.id !== card.participantId),
     [card.participantId, team.participants]
   );
+  const displayedTeam = useMemo(() => getDisplayedTeamCopy(team), [team]);
+  const displayedCard = useMemo(() => getDisplayedCardCopy(team, card), [card, team]);
 
   useEffect(() => {
     if (!pendingChoice || countdown <= 0 || currentVote || hasTriggeredSubmit) {
@@ -152,48 +154,48 @@ export default function ParticipantCardView({
         <div className="card-intel-header">
           <div className="eyebrow">Dossier agent • {team.name}</div>
           <h1>{card.participantName}</h1>
-          <p className="lead">{toReadableFrench(team.atmosphere)}</p>
+          <p className="lead">{displayedTeam.atmosphere}</p>
         </div>
 
         <div className="section-card">
           <div className="section-title">Contexte</div>
-          <p>{toReadableFrench(team.situation)}</p>
+          <p>{displayedTeam.situation}</p>
         </div>
 
         <div className="section-card highlight-card">
           <div className="section-title">Ta carte</div>
-          <h2>{toReadableFrench(card.headline)}</h2>
-          <p>{toReadableFrench(card.body)}</p>
+          <h2>{displayedCard.headline}</h2>
+          <p>{displayedCard.body}</p>
           <div className="share-callout">
-            <strong>À dire dans le débat :</strong> {toReadableFrench(card.sharePrompt)}
+            <strong>À dire dans le débat :</strong> {displayedCard.sharePrompt}
           </div>
         </div>
 
-        {card.isIntruder ? (
+        {displayedCard.isIntruder ? (
           <div className="section-card intruder-brief-card">
             <div className="section-title">Brief clandestin</div>
             <div className="chip-row">
               <span className="truth-chip truth-false intruder-chip">Intrus actif</span>
-              {card.sabotageChoice ? (
-                <span className={`vote-pill vote-${card.sabotageChoice}`}>
-                  Pousser vers {card.sabotageChoice}
+              {displayedCard.sabotageChoice ? (
+                <span className={`vote-pill vote-${displayedCard.sabotageChoice}`}>
+                  Pousser vers {displayedCard.sabotageChoice}
                 </span>
               ) : null}
             </div>
-            <p>{card.sabotageBrief ? toReadableFrench(card.sabotageBrief) : ""}</p>
+            <p>{displayedCard.sabotageBrief ?? ""}</p>
             <div className="share-callout sabotage-callout">
-              <strong>Objectif discret :</strong> fais paraitre l&apos;option {card.sabotageChoice} plus
+              <strong>Objectif discret :</strong> fais paraitre l&apos;option {displayedCard.sabotageChoice} plus
               rassurante, plus cool ou plus heroique qu&apos;elle ne l&apos;est vraiment.
             </div>
           </div>
         ) : null}
 
         <div className="decision-grid">
-          {team.options.map((option) => (
+          {displayedTeam.options.map((option) => (
             <article className="decision-card" key={option.id}>
               <div className="decision-tag">Décision {option.id}</div>
-              <h3>{toReadableFrench(option.title)}</h3>
-              <p>{toReadableFrench(option.description)}</p>
+              <h3>{option.title}</h3>
+              <p>{option.description}</p>
             </article>
           ))}
         </div>

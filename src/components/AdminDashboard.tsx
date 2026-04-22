@@ -15,7 +15,7 @@ import {
   labelDecision,
   labelTruth
 } from "../lib/utils";
-import { toReadableFrench } from "../lib/readableFrench";
+import { getDisplayedCardCopy, getDisplayedTeamCopy } from "../lib/partTwoCopy";
 
 type AdminTab = "operation" | "responses" | "teams";
 
@@ -86,11 +86,14 @@ function TeamDetails({
   onOpenFacilitator: (teamId: string) => void;
   onOpenRestitution: (teamId: string) => void;
 }) {
+  const displayedTeam = getDisplayedTeamCopy(team);
   const teamVoteCount = team.cards.filter((card) => votes[card.id]).length;
   const teamGuesses = team.cards
     .map((card) => guesses[card.id])
     .filter((guess): guess is IntruderGuessRecord => Boolean(guess));
-  const intruders = team.participants.filter((participant) => team.intruderIds.includes(participant.id));
+  const intruders = team.participants.filter((participant) =>
+    displayedTeam.intruderIds.includes(participant.id)
+  );
 
   return (
     <details className="team-details" open={team.participants.length >= 10}>
@@ -113,9 +116,9 @@ function TeamDetails({
       <div className="team-details-body">
         <div className="section-card">
           <div className="section-title">Scenario d'operation</div>
-          <h3>{toReadableFrench(team.scenarioTitle)}</h3>
-          <p>{toReadableFrench(team.atmosphere)}</p>
-          <p>{toReadableFrench(team.situation)}</p>
+          <h3>{displayedTeam.scenarioTitle}</h3>
+          <p>{displayedTeam.atmosphere}</p>
+          <p>{displayedTeam.situation}</p>
         </div>
 
         <div className="admin-callout subtle">
@@ -123,11 +126,11 @@ function TeamDetails({
         </div>
 
         <div className="decision-grid">
-          {team.options.map((option) => (
+          {displayedTeam.options.map((option) => (
             <article className="decision-card" key={option.id}>
               <div className="decision-tag">Décision {option.id}</div>
-              <h4>{toReadableFrench(option.title)}</h4>
-              <p>{toReadableFrench(option.description)}</p>
+              <h4>{option.title}</h4>
+              <p>{option.description}</p>
             </article>
           ))}
         </div>
@@ -135,17 +138,17 @@ function TeamDetails({
         <div className="admin-answer">
           <div>
             <span className="section-title">Lecture animateur</span>
-            <h3>{labelDecision(team.correctDecision)}</h3>
+            <h3>{labelDecision(displayedTeam.correctDecision)}</h3>
           </div>
-          <p>{toReadableFrench(team.rationale)}</p>
+          <p>{displayedTeam.rationale}</p>
         </div>
 
         <div className="intruder-admin-panel">
           <div className="section-title">Cellule d&apos;intrusion</div>
           <div className="chip-row">
             <span className="truth-chip truth-false">Intrus: {intruders.length}</span>
-            <span className={`vote-pill vote-${team.sabotageDecision}`}>
-              Mauvaise option a pousser: {team.sabotageDecision}
+            <span className={`vote-pill vote-${displayedTeam.sabotageDecision}`}>
+              Mauvaise option a pousser: {displayedTeam.sabotageDecision}
             </span>
             <span className="vote-pill vote-pending">
               Soupçons recus: {teamGuesses.length}/{team.cards.length}
@@ -186,27 +189,28 @@ function TeamDetails({
         <div className="participant-grid">
           {team.cards.map((card) => {
             const participant = team.participants.find((item) => item.id === card.participantId);
+            const displayedCard = getDisplayedCardCopy(team, card);
 
             return (
               <article className="participant-admin-card" key={card.id}>
                 <div className="participant-admin-header">
                   <div>
                     <div className="eyebrow">{card.participantName}</div>
-                    <h4>{toReadableFrench(card.headline)}</h4>
+                    <h4>{displayedCard.headline}</h4>
                     <p className="muted-line">{participant?.service || participant?.direction}</p>
                   </div>
                   <div className="chip-row compact-chip-row">
                     <span className={`truth-chip truth-${card.truthType}`}>{labelTruth(card.truthType)}</span>
-                    {card.isIntruder ? <span className="truth-chip truth-false">Intrus</span> : null}
+                    {displayedCard.isIntruder ? <span className="truth-chip truth-false">Intrus</span> : null}
                   </div>
                 </div>
-                <p>{toReadableFrench(card.body)}</p>
+                <p>{displayedCard.body}</p>
                 <div className="admin-callout">
-                  <strong>Lecture operateur:</strong> {card.adminTruth}
+                  <strong>Lecture operateur:</strong> {displayedCard.adminTruth}
                 </div>
-                {card.isIntruder && card.sabotageBrief ? (
+                {displayedCard.isIntruder && displayedCard.sabotageBrief ? (
                   <div className="admin-callout intruder-callout">
-                    <strong>Brief clandestin:</strong> {toReadableFrench(card.sabotageBrief)}
+                    <strong>Brief clandestin:</strong> {displayedCard.sabotageBrief}
                   </div>
                 ) : null}
                 {guesses[card.id] ? (

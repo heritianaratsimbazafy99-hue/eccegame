@@ -1,5 +1,5 @@
 import type { RestitutionEntry, TeamGame } from "../types";
-import { toReadableFrench } from "../lib/readableFrench";
+import { getDisplayedTeamCopy } from "../lib/partTwoCopy";
 
 interface RestitutionViewProps {
   team: TeamGame;
@@ -14,6 +14,7 @@ export default function RestitutionView({
   onChange,
   onBack
 }: RestitutionViewProps) {
+  const displayedTeam = getDisplayedTeamCopy(team);
   return (
     <main className="view-shell">
       <div className="toolbar print-hidden">
@@ -27,16 +28,16 @@ export default function RestitutionView({
 
       <section className="panel">
         <div className="eyebrow">Debrief mission • {team.name}</div>
-        <h1>{toReadableFrench(team.scenarioTitle)}</h1>
+        <h1>{displayedTeam.scenarioTitle}</h1>
         <p className="muted-line">{team.mixSummary}</p>
-        <p className="lead">{toReadableFrench(team.situation)}</p>
+        <p className="lead">{displayedTeam.situation}</p>
 
         <div className="decision-grid">
-          {team.options.map((option) => (
+          {displayedTeam.options.map((option) => (
             <article className="decision-card" key={option.id}>
               <div className="decision-tag">Décision {option.id}</div>
-              <h3>{toReadableFrench(option.title)}</h3>
-              <p>{toReadableFrench(option.description)}</p>
+              <h3>{option.title}</h3>
+              <p>{option.description}</p>
             </article>
           ))}
         </div>
